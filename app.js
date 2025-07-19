@@ -37,6 +37,8 @@ app.get("/testListing", async (req, res) =>{
   res.send("successful testing");
 });
 
+app.post("/")
+
 port = 8080;
 app.listen(port, () => {
   console.log(`app is listening to port:${port}`);
