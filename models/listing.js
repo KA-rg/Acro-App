@@ -9,13 +9,18 @@ const listingSchema = new Schema ({
   description:{
     type: String,
   },
+  // image: {
+  //   type: String,
+  //   set: (v) =>
+  //     v === ""
+  //       ? "https://unsplash.com/photos/a-person-standing-in-a-narrow-canyon-between-two-mountains-lrhF4w-KKjA"
+  //        : v,
+  // },
   image: {
-    type: String,
-    set: (v) =>
-      v === ""
-        ? "https://unsplash.com/photos/a-person-standing-in-a-narrow-canyon-between-two-mountains-lrhF4w-KKjA"
-         : v,
-  },
+  filename: String,
+  url: String
+},
+
   price: Number,
   location: String,
   country: String,
