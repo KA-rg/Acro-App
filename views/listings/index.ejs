@@ -6,7 +6,9 @@
   <title>WanderLust</title>
 </head>
 <body>
-  <h1>All Listings</h1>
+  <form method="GET" action="/listings/new">
+    <button>Create new listings</button>
+  </form>
   <ul>
     <% for(let listings of allListing){ %>
     <li><a href="/listings/<%= listings._id%>"> <%= listings.title %> </a></li>
