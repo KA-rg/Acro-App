@@ -5,6 +5,7 @@ const path = require("path");
 const Listing = require("./models/listing");
 const { title } = require("process");
 const methodOverride = require("method-override");
+const ejsMate = require("ejs-mate");
 
 main()
 .then(() => {
@@ -23,6 +24,7 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.engine('ejs', ejsMate);
 
 //index route
 app.get("/listings", async (req,res) => {
