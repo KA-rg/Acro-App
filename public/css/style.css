@@ -1,9 +1,16 @@
 body{
   font-family: "Plus Jakarta Sans" !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  flex: 1;
 }
 
 .fa-solid{
-  color: red;
+  color: #fe424d;
   margin-right: 7rem;
   margin-left: 2rem;
   font-size: 2rem;
@@ -84,4 +91,10 @@ body{
 .card-img-overlay:hover {
   opacity: 0.2;
   background-color: #fff;
+}
+
+/* new page */
+.add-btn {
+  background-color: #fe424d !important;
+  border: none !important;
 }
