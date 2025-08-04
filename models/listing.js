@@ -15,7 +15,7 @@ const listingSchema = new Schema ({
   //     v === ""
   //       ? "https://unsplash.com/photos/a-person-standing-in-a-narrow-canyon-between-two-mountains-lrhF4w-KKjA"
   //        : v,
-  // },
+  
   image: {
   filename: String,
   url: String

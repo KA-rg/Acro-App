@@ -1,5 +1,5 @@
 body{
-  background-color: pink;
+  font-family: "Plus Jakarta Sans" !important;
 }
 
 .fa-solid{
@@ -50,4 +50,38 @@ body{
   flex-wrap: wrap;
   justify-content: center;
   align-items: space-evenly;
+}
+
+
+/* cards */
+.card {
+  border: none !important;
+  margin-bottom: 2rem;
+}
+
+.card-img-top {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+.card-body {
+  padding: 0 !important;
+}
+
+.card-text p {
+  font-weight: 400;
+}
+
+.listing-link {
+  text-decoration: none;
+}
+
+/* card effect */
+.card-img-overlay {
+  opacity: 0;
+}
+.card-img-overlay:hover {
+  opacity: 0.2;
+  background-color: #fff;
 }
