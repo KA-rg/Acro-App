@@ -1,18 +1,28 @@
 <% layout("/layouts/boilerplate.ejs") %>
-<body>
-  <h3>Listing Details:</h3>
-  <ul>
-    <li><%= listing.title %></li>
-    <li><%= listing.description %></li>
-    <li>&#8377;<%= listing.price.toLocaleString("en-IN") %></li>
-    <li><%= listing.location %></li>
-    <li><%= listing.country %></li>
-  </ul>
-  <br>
-  <a href="/listing/<%=listing._id %>/edit">Edit this listing</a>
-  <br>
-  <form method="POST" action="/listing/<%=listing._id%>?_method=DELETE">
-    <button>Delete</button>
-  </form>
-  <a href="/listings">Back</a>
-</body>
+
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h3>Listing Details:</h3>
+      <div class="card" style="width: 100%;">
+        <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
+        <div class="card-body">
+          <h5 class="card-title mt-2"><%= listing.title %></h5>
+          <p class="card-text"><%= listing.description %></p>
+          <ul class="">
+            <li>₹<%= listing.price.toLocaleString("en-IN") %> / night</li>
+            <li><%= listing.location %></li>
+            <li><%= listing.country %></li>
+          </ul>
+          <div class="d-flex justify-content-between">
+            <a href="/listing/<%= listing._id %>/edit" class="btn btn-primary">Edit</a>
+            <form method="POST" action="/listing/<%= listing._id %>?_method=DELETE">
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <a href="/listings" class="btn btn-link mt-2">← Back to Listings</a>
+    </div>
+  </div>
+</div>
