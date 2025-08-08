@@ -28,8 +28,18 @@ app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 
+const validateListing = (req, res, next) => {
+  let { error } = listingSchema.validate(req.body);
+  if(result.error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressErrors(400, errMsg);  //server side validation
+  } else {
+    next();
+  }
+};
+
 //index route
-app.get("/listings", wrapAsync(async (req,res,next) => {
+app.get("/listings",validateListing, wrapAsync(async (req,res,next) => {
   const allListing = await Listing.find({});
   res.render("listings/index", { allListing });
 }));
@@ -40,35 +50,35 @@ app.get("/listings/new", (req,res) =>{
 });
 
 //show route
-app.get("/listings/:id", wrapAsync(async (req,res,next) =>{
+app.get("/listings/:id",validateListing, wrapAsync(async (req,res,next) =>{
   let { id } = req.params;
   const listing = await Listing.findById(id);
   res.render("listings/show", { listing });
 }));
 
 //Create Route
-app.post("/listings", wrapAsync(async (req,res,next) => {
+app.post("/listings",validateListing, wrapAsync(async (req,res,next) => {
   const newListing = new Listing(req.body.listing);
   await newListing.save();
   res.redirect("/listings");
 }));
 
 //edit route
-app.get("/listings/:id/edit", wrapAsync(async (req,res,next) => {
+app.get("/listings/:id/edit",validateListing, wrapAsync(async (req,res,next) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
   res.render("listings/edit", { listing });
 }));
 
 //update route
-app.put("/listings/:id", wrapAsync(async (req,res,next) =>{
+app.put("/listings/:id",validateListing, wrapAsync(async (req,res,next) =>{
   let { id } = req.params;
   await Listing.findByIdAndUpdate(id, {...req.body.listing});
   res.redirect(`/listings/${id}`);
 }));
 
 //delete route
-app.delete("/listings/:id", wrapAsync(async (req,res,next) => {
+app.delete("/listings/:id",validateListing, wrapAsync(async (req,res,next) => {
   let { id } = req.params;
   let deletedListing = await Listing.findByIdAndDelete(id);
   res.redirect("/listings");
