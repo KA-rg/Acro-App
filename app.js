@@ -12,10 +12,10 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressErrors = require("./utils/ExpressErrors.js");
-// const req = require("express/lib/request.js");
 const { listingSchema,reviewSchema } = require('./schema.js');
 const Review = require("./models/review.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -25,6 +25,7 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
+const dbUrl = process.env.ATLASDB_URL;
 main()
 .then(() => {
   console.log("connection to DB");
@@ -34,7 +35,7 @@ main()
 });
 
 async function main() {
-  await mongoose.connect("mongodb://localhost:27017/wanderlust");
+ await mongoose.connect(dbUrl);
 }
 
 app.set("views", path.join(__dirname,"views"));
@@ -44,8 +45,21 @@ app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: process.env.SECRET,
+  },
+  touchAfter: 24 * 3600, // time in seconds
+});
+
+store.on("error", () => {
+  console.log("ERROR in MONGO SESSION STORE", err);
+})
+
 const sessionOptions = {
-  secret: "mysupersecretcode",
+  store,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -75,11 +89,6 @@ app.use((req,res,next) => {
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
-
-   // 1. All routes
-// app.get("/", (req, res) => {
-//   res.send("Home Page");
-// });
 
 port = 8080;
 app.listen(port, () => {
