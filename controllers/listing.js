@@ -9,22 +9,27 @@ module.exports.renderNewForm = (req,res) => {
   res.render("listings/new");
 };
 
-module.exports.showListing = async (req,res,next) =>{
-  let { id } = req.params;
-  const listing = await Listing.findById(id)
-  .populate({
-    path: "reviews",
-    populate: {
-      path: "author",
-    },
-  })
-  .populate("owner");
-  if(!listing) {
-    req.flash("error", "Listing you requested for does not exist");
-    res.redirect("/listings");
+module.exports.showListing = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const listing = await Listing.findById(id)
+      .populate({
+        path: "reviews",
+        populate: { path: "author" },
+      })
+      .populate("owner");
+
+    if (!listing) {
+      req.flash("error", "Listing not found!");
+      return res.redirect("/listings");
+    }
+
+    res.render("listings/show", { listing });
+  } catch (err) {
+    next(err);
   }
-  res.render("listings/show", { listing });
 };
+
 
 module.exports.updateListing = async (req,res,next) =>{
   let { id } = req.params;
@@ -40,17 +45,23 @@ module.exports.updateListing = async (req,res,next) =>{
   res.redirect(`/listings/${id}`);
 };
 
-module.exports.renderEditForm = async (req, res) => {
-  let { id } = req.params;
-  const listing = await Listing.findById(id);
-  if (!listing && ) {
-    req.flash("error", "Listing you requested for does not exist!");
-    res.redirect("/listings");
-  }
+module.exports.renderEditForm = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const listing = await Listing.findById(id);
 
-  let originalImageUrl = listing.image.url;
-  originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_25");
-  res.render("listings/edit.ejs", { listing, originalImageUrl });
+    if (!listing) {
+      req.flash("error", "Listing not found!");
+      return res.redirect("/listings");
+    }
+
+    let originalImageUrl = listing.image.url;
+    originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_25,h_25");
+
+    res.render("listings/edit.ejs", { listing, originalImageUrl });
+  } catch (err) {
+    next(err);
+  }
 };
 
 module.exports.createListing = async (req,res,next) => {
