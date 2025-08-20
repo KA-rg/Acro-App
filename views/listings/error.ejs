@@ -1,8 +1,8 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="row mt-3">
-  <div class="alert alert-danger col-6 offset-3" role="alert">
-    <h4 class="alert-heading"><%= err.message %></h4>
-  </div>
-  <a href="/listings" class="btn btn-link mt-2">← Back to Listings</a>
+<div class="container text-center mt-5">
+  <h1 class="display-1 fw-bold text-warning">500</h1>
+  <h2 class="mb-3">Something Went Wrong</h2>
+  <p class="lead mb-4"><%= err.message || "An unexpected error occurred on the server." %></p>
+  <a href="/listings" class="btn btn-outline-dark btn-lg">Return to Home</a>
 </div>

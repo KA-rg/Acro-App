@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -73,22 +77,25 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
    // 1. All routes
-app.get("/", (req, res) => {
-  res.send("Home Page");
-});
-
-// 2. Catch-all for undefined routes
-// app.all("*", (req, res, next) => {
-//   next(new ExpressErrors(404, "Page not found"));
+// app.get("/", (req, res) => {
+//   res.send("Home Page");
 // });
-
-// 3. Error handler at the very end
-app.use((err, req, res, next) => {
-  const { status = 500, message = "Something went wrong" } = err;
-  res.status(status).render("listings/error", { err });
-});
 
 port = 8080;
 app.listen(port, () => {
   console.log(`app is listening to port:${port}`);
+});
+
+// 2. Catch-all for undefined routes
+app.all(/.*/, (req, res, next) => {
+  next(new ExpressErrors(404, "Page not found"));
+});
+
+// 3. Error handler at the very end
+app.use((err, req, res, next) => {
+  const { status = 500 } = err;
+  if (status === 404) {
+    return res.status(404).render("listings/404.ejs", { err });
+  }
+  res.status(status).render("listings/error.ejs", { err });
 });
