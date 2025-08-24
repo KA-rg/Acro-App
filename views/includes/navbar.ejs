@@ -25,9 +25,18 @@
       </ul>
 
       <!-- Search Bar -->
-      <form class="d-flex me-3" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search destinations..." aria-label="Search">
-        <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-search"></i></button>
+      <form id="navbarSearchForm" class="d-flex me-3" role="search" method="GET" action="/listings">
+        <input 
+          id="navbarSearchInput"
+          class="form-control me-2" 
+          type="search" 
+          placeholder="Search destinations..." 
+          aria-label="Search" 
+          name="search"
+        >
+        <button class="btn btn-outline-primary" type="submit">
+          <i class="fa-solid fa-search"></i>
+        </button>
       </form>
 
       <!-- Right links (Auth) -->

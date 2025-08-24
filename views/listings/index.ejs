@@ -123,6 +123,17 @@
   <% } %>
 </div>
 
+<% if (allListing.length === 0) { %>
+  <p class="text-muted text-center">
+    No results found 
+    <% if (search) { %> for "<%= search %>" <% } %>
+  </p>
+<% } else { %>
+  <% allListing.forEach(listing => { %>
+    <!-- Render your listing card -->
+  <% }) %>
+<% } %>
+
 <script>
   let taxSwitch = document.getElementById("flexSwitchCheckDefault");
 
